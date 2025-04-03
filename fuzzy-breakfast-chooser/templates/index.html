@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Fuzzy Breakfast Chooser 🍳</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Fuzzy Breakfast Chooser 🍽️</h1>
+        <form method="POST" action="/predict">
+            <label>Hunger Level (1-3):</label>
+            <input type="range" name="hunger" min="1" max="3" required>
+
+            <label>Time Available (1: <10 min, 2: 10–20 min, 3:>20 min):</label>
+            <input type="range" name="time" min="1" max="3" required>
+
+            <label>Health Goal:</label>
+            <select name="goal">
+                <option value="weight_loss">Weight Loss</option>
+                <option value="maintenance">Maintenance</option>
+                <option value="weight_gain">Weight Gain</option>
+            </select>
+
+            <label>Activity Level:</label>
+            <select name="activity">
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+            </select>
+
+            <label>Food Preference:</label>
+            <select name="preference">
+                <option value="veg">Vegetarian</option>
+                <option value="nonveg">Non-Vegetarian</option>
+            </select>
+
+            <button type="submit">Suggest My Breakfast</button>
+        </form>
+
+        {% if result %}
+        <div class="result-card">
+            <h2>{{ category }} Meal 🍽️</h2>
+            <p>{{ tagline }}</p>
+            <h3>{{ dish }}</h3>
+            <img src="{{ url_for('static', filename=image) }}" alt="{{ dish }}" width="300">
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // Include the JavaScript code here or link to external JS file
+        document.addEventListener('DOMContentLoaded', function () {
+            // Create and append modal overlay
+            const modalOverlay = document.createElement('div');
+            modalOverlay.className = 'modal-overlay';
+            document.body.appendChild(modalOverlay);
+
+            // Move the result card into the modal overlay
+            const resultCard = document.querySelector('.result-card');
+            modalOverlay.appendChild(resultCard);
+
+            // Add close button to result card
+            const closeButton = document.createElement('div');
+            closeButton.className = 'close-button';
+            closeButton.innerHTML = '×';
+            resultCard.appendChild(closeButton);
+
+            // Show the modal
+            setTimeout(() => {
+                modalOverlay.classList.add('active');
+            }, 100);
+
+            // Close modal when clicking close button or outside the modal
+            closeButton.addEventListener('click', closeModal);
+            modalOverlay.addEventListener('click', function (e) {
+                if (e.target === modalOverlay) {
+                    closeModal();
+                }
+            });
+
+            // Close modal function
+            function closeModal() {
+                modalOverlay.classList.remove('active');
+                setTimeout(() => {
+                    modalOverlay.style.display = 'none';
+                }, 300);
+            }
+        });
+    </script>
+</body>
+
+</html>
