@@ -82,7 +82,7 @@ def run_fuzzy_logic(hunger, time, goal, activity, preference):
     # Generate image path
     folder_name = selected_dish.lower().replace(" ", "_").replace("(", "").replace(")", "").replace("+", "plus").replace("&", "and").replace(",", "").replace("-", "_")
     category_folder = category.replace(" ", "-")
-    image_path = f"images/{category_folder}/{folder_name}/{folder_name}.jpg"
+    image_path = f"images/{category_folder}/{folder_name}.jpg"
 
     # Return meal type, dish, image, and fun line
     return category.capitalize(), selected_dish, image_path, taglines[category]
